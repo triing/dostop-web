@@ -1,4 +1,4 @@
 Dostop
 ============================
 
-Sistem za nadzor dostopa.
+Sistem za upravljanje - malo drugače ;)
