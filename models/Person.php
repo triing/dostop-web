@@ -109,7 +109,7 @@ class Person extends \yii\db\ActiveRecord
             parent::afterSave($insert,$changedAttributes);
             // when insert false, then record has been updated
             if (!$insert) {
-              // add StatusLog entry
+              // add Log entry
               $person_log = new PersonLog;
               $person_log->person_id = $this->id;
               $person_log->updated_by = $this->updated_by;

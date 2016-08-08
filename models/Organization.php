@@ -127,6 +127,20 @@ class Organization extends \yii\db\ActiveRecord
         ];
     }
 
+	public function afterSave($insert,$changedAttributes)
+    {
+            parent::afterSave($insert,$changedAttributes);
+            // when insert false, then record has been updated
+            if (!$insert) {
+              // add Log entry
+              $organization_log = new OrganizationLog;
+              $organization_log->organization_id = $this->id;
+              $organization_log->updated_by = $this->updated_by;
+              $organization_log->created_at = time();
+              $organization_log->save();
+            } 
+    }
+	
     /**
      * @return \yii\db\ActiveQuery
      */
