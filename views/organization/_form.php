@@ -1,13 +1,19 @@
 <?php
 
+use yii\widgets\ActiveForm;
+
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 use kartik\tabs\TabsX;
 use kartik\select2\Select2;
+use kartik\depdrop\DepDrop;
 
 use app\models\Country;
+use app\models\Post;
+use app\models\Municipality;
+use app\models\Street;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Organization */
@@ -29,10 +35,51 @@ use app\models\Country;
 		$form->field($model, 'promoted')->checkBox(['selected' => $model->promoted]);
 	
 	$location_content = 
-		$form->field($model, 'country_code')->widget(Select2::classname(), ['data' => ArrayHelper::map(Country::find()->all(),'code','name'),]) .	
-		$form->field($model, 'municipality_id')->textInput() .
-		$form->field($model, 'postal_code')->textInput() .
-		$form->field($model, 'street_id')->textInput() .
+		$form->field($model, 'country_code')->widget(Select2::classname(), [
+			'data' => ArrayHelper::map(Country::find()->all(),'code','name'),
+		]) .
+		
+		$form->field($model, 'org_municipality_id')->hiddenInput(['value'=> ($model->municipality_id === null ? '' : $model->municipality_id)])->label(false) .
+		$form->field($model, 'municipality_id')->widget(DepDrop::classname(), [
+			'type'=>DepDrop::TYPE_SELECT2,
+			'options'=>['id'=>'name', 'placeholder'=>Yii::t('app', 'Select municipality ...')],
+			'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+			'data' =>($model->country_code)?ArrayHelper::map(Municipality::find()->where(['country_code'=>$model->country_code])->select(["id", "name"])->asArray()->all(), 'id', 'name'):[],
+			'pluginOptions'=>[
+				'depends'=>['organization-country_code'],
+				'url'=>Url::to('/organization/country-municipality-ids/'),
+				'params'=>['organization-org_municipality_id'],
+			]
+		]) .
+		
+		$form->field($model, 'org_postal_code')->hiddenInput(['value'=> ($model->postal_code === null ? '' : $model->postal_code)])->label(false) .
+		$form->field($model, 'postal_code')->widget(DepDrop::classname(), [
+			'type'=>DepDrop::TYPE_SELECT2,
+			'options'=>['code'=>'postalCodeName', 'placeholder'=>Yii::t('app', 'Select post ...')],
+			'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+			'data' =>($model->country_code)?ArrayHelper::map(Post::find()->where(['country_code'=>$model->country_code])->select(["code AS id", "CONCAT(code, ' ', name) AS name"])->asArray()->all(), 'id', 'name'):[],
+			'pluginOptions'=>[
+				'depends'=>['organization-country_code'],
+				'url'=>Url::to('/organization/country-postal-codes/'),
+				'params'=>['organization-org_postal_code'],
+			]
+		]) .
+		
+//		$form->field($model, 'street_id')->textInput() .
+		$form->field($model, 'org_street_id')->hiddenInput(['value'=> ($model->street_id === null ? '' : $model->street_id)])->label(false) .
+		$form->field($model, 'street_id')->widget(DepDrop::classname(), [
+			'type'=>DepDrop::TYPE_SELECT2,
+			'options'=>['street_id'=>'street_name', 'placeholder'=>Yii::t('app', 'Select street ...')],
+			'select2Options'=>['pluginOptions'=>['allowClear'=>true,'minimumInputLength' => 3]],
+			'data' =>($model->municipality_id)?ArrayHelper::map(Street::find()->where(['municipality_id'=>$model->municipality_id])->select(["id", "name"])->asArray()->all(), 'id', 'name'):[],
+			'pluginOptions'=>[
+				'depends'=>['organization-country_code', 'organization-municipality_id'],
+				'url'=>Url::to('/organization/municipality-street-ids/'),
+				'params'=>['organization-org_street_id'],
+			]
+		]) .
+
+		
 		$form->field($model, 'house_no')->textInput(['maxlength' => true]);
 
 	$data_content =

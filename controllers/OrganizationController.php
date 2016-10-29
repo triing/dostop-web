@@ -3,11 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Organization;
-use app\models\OrganizationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
+
+use app\models\Organization;
+use app\models\OrganizationSearch;
+use app\models\Post;
+use app\models\Municipality;
+use app\models\Street;
 
 /**
  * OrganizationController implements the CRUD actions for Organization model.
@@ -26,6 +31,11 @@ class OrganizationController extends Controller
         ];
     }
 
+	public function beforeAction($action) {
+//		$this->enableCsrfValidation = false;
+		return parent::beforeAction($action);
+	}
+	
     /**
      * Lists all Organization models.
      * @return mixed
@@ -103,6 +113,69 @@ class OrganizationController extends Controller
         return $this->redirect(['index']);
     }
 
+	public function actionCountryPostalCodes() {
+		$out = [];
+		$selected = '';
+		$data = Yii::$app->request->post();
+		if (isset($data)) {
+			$depdrop_parents = $data['depdrop_parents'];
+			$country_code = $depdrop_parents[0];
+			
+			$out = Post::getPostalCodesbyCountry($country_code); 
+			
+			if(!empty($data['depdrop_params'])) {
+				$depdrop_params = $data['depdrop_params'];
+				$selected = $depdrop_params[0];
+			}
+			
+			echo Json::encode(['output'=>$out, 'selected'=>$selected]);
+			return;
+		}
+		echo Json::encode(['output'=>'', 'selected'=>$selected]);
+	}	
+	
+	public function actionCountryMunicipalityIds() {
+		$out = [];
+		$selected = '';
+		$data = Yii::$app->request->post();
+		if (isset($data)) {
+			$depdrop_parents = $data['depdrop_parents'];
+			$country_code = $depdrop_parents[0];
+			
+			$out = Municipality::getMunicipalitesbyCountry($country_code); 
+			
+			if(!empty($data['depdrop_params'])) {
+				$depdrop_params = $data['depdrop_params'];
+				$selected = $depdrop_params[0];
+			}
+			
+			echo Json::encode(['output'=>$out, 'selected'=>$selected]);
+			return;
+		}
+		echo Json::encode(['output'=>'', 'selected'=>$selected]);
+	}	
+	
+	public function actionMunicipalityStreetIds() {
+		$out = [];
+		$selected = '';
+		$data = Yii::$app->request->post();
+		if (isset($data)) {
+			$depdrop_parents = $data['depdrop_parents'];
+			$municipality_id = $depdrop_parents[0];
+			
+			$out = Street::getStreetsbyMunicipality($municipality_id); 
+			
+			if(!empty($data['depdrop_params'])) {
+				$depdrop_params = $data['depdrop_params'];
+				$selected = $depdrop_params[0];
+			}
+			
+			echo Json::encode(['output'=>$out, 'selected'=>$selected]);
+			return;
+		}
+		echo Json::encode(['output'=>'', 'selected'=>$selected]);
+	}	
+	
     /**
      * Finds the Organization model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

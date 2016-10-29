@@ -23,7 +23,11 @@
         "yiidoc/yii2-redactor": "*",
 		"kartik-v/yii2-krajee-base": "~1.7",
 		"kartik-v/yii2-widget-select2": "@dev",
-        "kartik-v/yii2-tabs-x": "@dev"
+        "kartik-v/yii2-tabs-x": "@dev",
+        "kartik-v/dependent-dropdown": "dev-master",
+        "kartik-v/yii2-widget-depdrop": "@dev",
+        "kartik-v/yii2-widget-datepicker": "@dev",
+        "kartik-v/yii2-datecontrol": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

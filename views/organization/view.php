@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
+use yii\data\ActiveDataProvider;
+
+use kartik\tabs\TabsX;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Organization */

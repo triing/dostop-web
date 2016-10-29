@@ -90,7 +90,8 @@ class Organization extends \yii\db\ActiveRecord
             [['house_no', 'activity_type_id'], 'string', 'max' => 8],
             [['slug'], 'unique'],
             [['name'], 'unique'],
-            [['domain'], 'unique']
+            [['domain'], 'unique'],
+			['postal_code', 'default', 'value' => null],
         ];
     }
 
