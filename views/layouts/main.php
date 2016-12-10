@@ -4,10 +4,15 @@
 /* @var $content string */
 
 use yii\helpers\Html;
+
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use yii\bootstrap\Modal;
+
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+
+use kartik\widgets\Select2;
 
 AppAsset::register($this);
 ?>
@@ -57,7 +62,7 @@ AppAsset::register($this);
 			]]
 		]],
 		['label' => Yii::t('app', 'Local codes'), 'items' => [
-			['label' => Yii::t('app', 'Management types'), 'url' => ['#']],
+			['label' => Yii::t('app', 'Management types'), 'url' => ['/management-type']],
 			['label' => Yii::t('app', 'Room types'), 'url' => ['#']],
 			['label' => Yii::t('app', 'Organization types'), 'url' => ['#']],
 			['label' => Yii::t('app', 'Membership types'), 'url' => ['/membership-type']],
@@ -68,7 +73,8 @@ AppAsset::register($this);
 			['label' => Yii::t('app', 'Product types'), 'url' => ['#']],
 			['label' => Yii::t('app', 'Project types'), 'url' => ['/project-type']],
 			['label' => Yii::t('app', 'Partnership types'), 'url' => ['/partnership-type']],
-			['label' => Yii::t('app', 'Lock types'), 'url' => ['#']],
+			['label' => Yii::t('app', 'Lock types'), 'url' => ['/lock-type']],
+			['label' => Yii::t('app', 'Tag types'), 'url' => ['/tag-type']],
 		]],
 		['label' => Yii::t('app', 'Administration'), 'items' => [
 			['label' => Yii::t('app', 'Buildings'), 'url' => ['/building']],
@@ -91,6 +97,7 @@ AppAsset::register($this);
 	]);	
 	
     NavBar::end();
+	
     ?>
 
     <div class="container">
@@ -108,6 +115,21 @@ AppAsset::register($this);
         <!--p class="pull-right"><?= Yii::powered() ?></p-->
     </div>
 </footer>
+
+<?php
+	yii\bootstrap\Modal::begin([
+		'headerOptions' => ['id' => 'modalHeader'],
+		'closeButton' => ['id' => 'close-button'],
+		'id' => 'modal',
+		'size' => 'modal-lg',
+//        'tabindex' => false, // important for Select2 to work properly
+		//keeps from closing modal with esc key or by clicking out of the modal.
+		// user must click cancel or X to close
+//		'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE]
+	]);
+	echo '<div id="modalContent"><div style="text-align:center"><img src="/img/ajax-preloader.gif"></div></div>';
+	yii\bootstrap\Modal::end();
+?>
 
 <?php $this->endBody() ?>
 </body>

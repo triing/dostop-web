@@ -123,6 +123,23 @@ class Room extends \yii\db\ActiveRecord
 		return $this->getFloor()->one()->fullcode . $this->getFloor()->one()->separator . $this->code;
 	}
 	
+	public function getCodename() {
+		return $this->getFullcode() . " - " . $this->name;
+	}
+	
+    public function getDoorsTo()
+    {
+        return $this->hasMany(Door::className(), ['to_room_id' => 'id']);
+    }
+    public function getDoorsFrom()
+    {
+        return $this->hasMany(Door::className(), ['from_room_id' => 'id']);
+    }
+    public function getManagements()
+    {
+        return $this->hasMany(RoomManagement::className(), ['room_id' => 'id']);
+    }
+	
     /**
      * @return \yii\db\ActiveQuery
      */

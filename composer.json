@@ -27,7 +27,8 @@
         "kartik-v/dependent-dropdown": "dev-master",
         "kartik-v/yii2-widget-depdrop": "@dev",
         "kartik-v/yii2-widget-datepicker": "@dev",
-        "kartik-v/yii2-datecontrol": "dev-master"
+        "kartik-v/yii2-datecontrol": "dev-master",
+        "kartik-v/yii2-widget-datetimepicker": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

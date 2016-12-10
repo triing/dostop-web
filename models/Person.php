@@ -67,7 +67,7 @@ class Person extends \yii\db\ActiveRecord
     {
         return [
             [['language', 'first_name', 'last_name'], 'required'],
-            [['created_at', 'updated_at', 'created_by', 'updated_by', 'user_id', 'status_id', 'municipality_id', 'postal_code', 'street_id'], 'integer'],
+            [['created_at', 'updated_at', 'created_by', 'updated_by', 'status_id', 'municipality_id', 'postal_code', 'street_id', 'exact_birth_date'], 'integer'],
             [['birth_date'], 'safe'],
             [['language'], 'string', 'max' => 2],
             [['first_name', 'last_name', 'email'], 'string', 'max' => 32],
@@ -91,7 +91,7 @@ class Person extends \yii\db\ActiveRecord
             'language' => Yii::t('app', 'Language'),
             'first_name' => Yii::t('app', 'First Name'),
             'last_name' => Yii::t('app', 'Last Name'),
-            'user_id' => Yii::t('app', 'User ID'),
+//            'user_id' => Yii::t('app', 'User ID'),
             'birth_date' => Yii::t('app', 'Birth Date'),
             'sex' => Yii::t('app', 'Sex'),
             'status_id' => Yii::t('app', 'Status ID'),
@@ -101,6 +101,7 @@ class Person extends \yii\db\ActiveRecord
             'postal_code' => Yii::t('app', 'Postal Code'),
             'street_id' => Yii::t('app', 'Street ID'),
             'house_no' => Yii::t('app', 'House No'),
+            'exact_birth_date' => Yii::t('app', 'Exact Birth Date'),
         ];
     }
 
@@ -117,6 +118,10 @@ class Person extends \yii\db\ActiveRecord
               $person_log->save();
             } 
     }
+	
+	public function getFirstnamelastnameemail() {
+		return $this->first_name . " " . $this->last_name . " (" . $this->email . ")";
+	}
 	
     /**
      * @return \yii\db\ActiveQuery
@@ -137,8 +142,16 @@ class Person extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getTagAssignments()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasMany(TagAssignment::className(), ['person_id' => 'id']);
     }
+	
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+//    public function getUser()
+//    {
+//        return $this->hasOne(User::className(), ['id' => 'user_id']);
+//    }
 }

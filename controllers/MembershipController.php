@@ -58,13 +58,19 @@ class MembershipController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($organization_id)
     {
         $model = new Membership();
+		$model->organization_id = (int)$organization_id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+//            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['organization/view', 'id' => $model->organization_id]);
+        }elseif (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', [
+                        'model' => $model
+            ]);
+		} else {
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -82,7 +88,12 @@ class MembershipController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+//            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['organization/view', 'id' => $model->organization_id]);
+        }elseif (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', [
+                        'model' => $model
+            ]);
         } else {
             return $this->render('update', [
                 'model' => $model,

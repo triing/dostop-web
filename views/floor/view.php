@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'columns' => [
 				'fullcode',
 				'name',
-				'area',
+				// 'area',
 				[
 					'class' => 'yii\grid\ActionColumn',
 					'controller' => 'room'

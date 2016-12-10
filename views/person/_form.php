@@ -33,6 +33,7 @@ use app\models\Street;
 		$form->field($model, 'last_name')->textInput(['maxlength' => true]) .
 		$form->field($model, 'sex')->radioList(['M' => Yii::t('app', 'Male'), 'F' => Yii::t('app', 'Female')]) .
 		
+		$form->field($model, 'exact_birth_date')->checkbox() .
 		$form->field($model, 'birth_date')->widget(DateControl::classname(), [
 			'type'=>DateControl::FORMAT_DATE,
 		]) .

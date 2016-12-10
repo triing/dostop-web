@@ -30,6 +30,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'allow_edit_events')->checkbox() ?>
 
+    <?= $form->field($model, 'access_rooms_always')->checkbox() ?>
+
+    <?= $form->field($model, 'access_rooms_working_hours')->checkbox() ?>
+
     <?//= $form->field($model, 'created_by')->textInput() ?>
 
     <?//= $form->field($model, 'updated_by')->textInput() ?>

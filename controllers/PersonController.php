@@ -8,6 +8,7 @@ use app\models\PersonSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 
 /**
  * PersonController implements the CRUD actions for Person model.
@@ -61,9 +62,18 @@ class PersonController extends Controller
     public function actionCreate()
     {
         $model = new Person();
+		$model->language = Yii::$app->language;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+			if((int)Yii::$app->request->get('organization_id') > 0) {
+				return $this->redirect(['membership/create', 'organization_id' => Yii::$app->request->get('organization_id')]);
+			} else {
+				return $this->redirect(['view', 'id' => $model->id]);
+			}
+        } elseif (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', [
+                        'model' => $model
+            ]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -103,6 +113,25 @@ class PersonController extends Controller
         return $this->redirect(['index']);
     }
 
+//	public function actionNameemaillist($q = null, $id = null) {
+	public function actionNameemaillist($q = null) {
+//		\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+		$out = ['results' => ['id' => '', 'text' => '']];
+		if (!is_null($q)) {
+//			$name1 = new \yii\db\Expression("CONCAT(first_name, ' ', last_name, ' (', email, ')') as name");
+//			$name2 = new \yii\db\Expression("CONCAT(first_name, ' ', last_name, ' (', email, ')') as name");
+			$query = new Query;
+			$query->select("id, CONCAT(first_name, ' ', last_name, ' (', email, ')') AS name FROM person WHERE CONCAT(first_name, ' ', last_name, ' (', email, ')') LIKE '$q' LIMIT 20");
+			$command = $query->createCommand();
+			$data = $command->queryAll();
+			$out['results'] = array_values($data);
+		}
+//		elseif ($id > 0) {
+//			$out['results'] = ['id' => $id, 'text' => City::find($id)->name];
+//		}
+		return $out;
+	}
+	
     /**
      * Finds the Person model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -118,4 +147,5 @@ class PersonController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+	
 }

@@ -63,7 +63,7 @@ class MembershipType extends \yii\db\ActiveRecord
     {
         return [
             [['description_sl', 'description_en'], 'required'],
-            [['allow_edit_organization', 'allow_edit_projects', 'allow_edit_members', 'allow_edit_rooms', 'allow_edit_resources', 'allow_edit_products', 'allow_edit_events', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['access_rooms_working_hours', 'access_rooms_always', 'allow_edit_organization', 'allow_edit_projects', 'allow_edit_members', 'allow_edit_rooms', 'allow_edit_resources', 'allow_edit_products', 'allow_edit_events', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['description_sl', 'description_en'], 'string', 'max' => 32]
         ];
     }
@@ -84,6 +84,8 @@ class MembershipType extends \yii\db\ActiveRecord
             'allow_edit_resources' => Yii::t('app', 'Allow Edit Resources'),
             'allow_edit_products' => Yii::t('app', 'Allow Edit Products'),
             'allow_edit_events' => Yii::t('app', 'Allow Edit Events'),
+            'access_rooms_always' => Yii::t('app', 'Access Rooms Always'),
+            'access_rooms_working_hours' => Yii::t('app', 'Access Rooms on Working Hours'),
             'created_by' => Yii::t('app', 'Created By'),
             'updated_by' => Yii::t('app', 'Updated By'),
             'created_at' => Yii::t('app', 'Created At'),

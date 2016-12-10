@@ -145,6 +145,14 @@ class Organization extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getMemberships()
+    {
+        return $this->hasMany(Membership::className(), ['organization_id' => 'id']);
+    }
+	
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getCreatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'created_by']);

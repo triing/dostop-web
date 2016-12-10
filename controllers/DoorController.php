@@ -3,18 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Organization;
-use app\models\OrganizationSearch;
+use app\models\Door;
+use app\models\DoorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * OrganizationController implements the CRUD actions for Organization model.
+ * DoorController implements the CRUD actions for Door model.
  */
-class OrganizationController extends Controller
+class DoorController extends Controller
 {
-
     public function behaviors()
     {
         return [
@@ -24,28 +23,16 @@ class OrganizationController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-            'access' => [
-				'class' => \yii\filters\AccessControl::className(),
-				'only' => ['index','create','update','view'],
-				'rules' => [
-					// allow authenticated users
-					[
-						'allow' => true,
-						'roles' => ['@'],
-					],
-					// everything else is denied
-				],
-            ],
         ];
     }
 
     /**
-     * Lists all Organization models.
+     * Lists all Door models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new OrganizationSearch();
+        $searchModel = new DoorSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -55,7 +42,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Displays a single Organization model.
+     * Displays a single Door model.
      * @param integer $id
      * @return mixed
      */
@@ -67,13 +54,13 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Creates a new Organization model.
+     * Creates a new Door model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Organization();
+        $model = new Door();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -85,7 +72,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Updates an existing Organization model.
+     * Updates an existing Door model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -104,7 +91,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Deletes an existing Organization model.
+     * Deletes an existing Door model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -117,35 +104,18 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Finds the Organization model based on its primary key value.
+     * Finds the Door model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Organization the loaded model
+     * @return Door the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Organization::findOne($id)) !== null) {
+        if (($model = Door::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-	
-    /**
-     * Displays a single Status model.
-     * @param string $slug
-     * @return mixed
-     */
-    public function actionSlug($slug)
-    { 
-      $model = Organization::find()->where(['slug'=>$slug])->one();
-      if (!is_null($model)) {
-          return $this->render('view', [
-              'model' => $model,
-          ]);      
-      } else {
-        return $this->redirect('/organization/index');
-      }
-    }	
 }

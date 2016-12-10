@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             // 'xpos',
             // 'ypos',
-             'area',
+             // 'area',
             // 'created_by',
             // 'updated_by',
             // 'created_at',

@@ -36,8 +36,59 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+	
+<?php
 
-    <?= DetailView::widget([
+	$working_hours_content = "https://github.com/philippfrenzel/yii2fullcalendar";
+
+
+	$managements_content =
+		'<p>' . Html::a(Yii::t('app', 'Create Management'), ['room-management/create'], ['class' => 'btn btn-success']) . '</p>' .
+		GridView::widget([
+			'dataProvider' => new ActiveDataProvider(['query' => $model->getManagements()]),
+			'columns' => [
+				'id',
+				[
+					'attribute' => 'organization_id',
+					'label' => Yii::t('app', 'Organization'),
+					'value' => 'organization.name',
+				],
+				[
+					'attribute' => 'management_type_id',
+					'label' => Yii::t('app', 'Management type'),
+					'value' => 'managementType.description_' . Yii::$app->language,
+				],
+				'start_date',
+				'end_date',
+				[
+					'class' => 'yii\grid\ActionColumn',
+					'controller' => 'room-management'
+				],
+			]
+		]);
+
+	$doors_content = 
+		'<p>' . Html::a(Yii::t('app', 'Create Door'), ['door/create'], ['class' => 'btn btn-success']) . '</p>' .
+		GridView::widget([
+			'dataProvider' => new ActiveDataProvider(['query' => $model->getDoorsTo()]),
+			'columns' => [
+				'id',
+				'from_room_id',
+				[
+					'attribute' => 'lock_type_id',
+					'label' => Yii::t('app', 'Lock type'),
+					'value' => 'lockType.description',
+				],
+				// 'name',
+				// 'area',
+				[
+					'class' => 'yii\grid\ActionColumn',
+					'controller' => 'door'
+				],
+			]
+		]);
+
+    $general_content = DetailView::widget([
         'model' => $model,
         'attributes' => [
             'floor_id',
@@ -45,6 +96,32 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'area',
         ],
-    ]) ?>
+    ]);
+
+	echo TabsX::widget([
+    'position' => TabsX::POS_ABOVE,
+    'align' => TabsX::ALIGN_LEFT,
+	'encodeLabels' => false,
+    'items' => [
+        [
+            'label' => '<i class="glyphicon glyphicon-time"></i> ' . Yii::t('app', 'Working hours'),
+            'content' => $working_hours_content,
+        ],
+        [
+            'label' => '<i class="glyphicon glyphicon-briefcase"></i> ' . Yii::t('app', 'Management'),
+            'content' => $managements_content,
+        ],
+        [
+            'label' => '<i class="glyphicon glyphicon-book"></i> ' . Yii::t('app', 'Doors'),
+            'content' => $doors_content,
+        ],
+        [
+            'label' => '<i class="glyphicon glyphicon-info-sign"></i> ' . Yii::t('app', 'General'),
+            'content' => $general_content,
+        ],
+    ],
+	]);
+	
+?>
 
 </div>

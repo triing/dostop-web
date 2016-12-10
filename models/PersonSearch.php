@@ -18,7 +18,7 @@ class PersonSearch extends Person
     public function rules()
     {
         return [
-            [['id', 'created_by', 'updated_by', 'created_at', 'updated_at', 'user_id', 'status_id', 'municipality_id', 'postal_code', 'street_id'], 'integer'],
+            [['id', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status_id', 'municipality_id', 'postal_code', 'street_id'], 'integer'],
             [['language', 'first_name', 'last_name', 'birth_date', 'sex', 'email', 'phone', 'house_no'], 'safe'],
         ];
     }
@@ -61,7 +61,7 @@ class PersonSearch extends Person
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user_id' => $this->user_id,
+//            'user_id' => $this->user_id,
             'birth_date' => $this->birth_date,
             'status_id' => $this->status_id,
             'municipality_id' => $this->municipality_id,

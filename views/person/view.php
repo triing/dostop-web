@@ -2,11 +2,16 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
+use yii\data\ActiveDataProvider;
+
+use kartik\tabs\TabsX;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Person */
 
-$this->title = $model->id;
+//$this->title = $model->id;
+$this->title = $model->first_name . " " . $model->last_name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'People'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -25,7 +30,31 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
+<?php
+	
+	$tag_assignments_content = GridView::widget([
+		'dataProvider' => new ActiveDataProvider(['query' => $model->getTagAssignments()]),
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'tag_id',
+            'person_id',
+            'tag_type_id',
+            'start_date',
+            'end_date',
+            // 'created_by',
+            // 'updated_by',
+            // 'created_at',
+            // 'updated_at',
+
+//            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]);
+
+	$general_content = DetailView::widget([
+//	= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
@@ -36,8 +65,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'language',
             'first_name',
             'last_name',
-            'user_id',
+//            'user_id',
             'birth_date',
+            'exact_birth_date',
             'sex',
             'status_id',
             'email:email',
@@ -47,6 +77,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'street_id',
             'house_no',
         ],
-    ]) ?>
+    ]);
+
+	echo TabsX::widget([
+    'position' => TabsX::POS_ABOVE,
+    'align' => TabsX::ALIGN_LEFT,
+	'encodeLabels' => false,
+    'items' => [
+        [
+            'label' => '<i class="glyphicon glyphicon-info-sign"></i> ' . Yii::t('app', 'General'),
+            'content' => $general_content,
+        ],
+        [
+            'label' => '<i class="glyphicon glyphicon-tag"></i> ' . Yii::t('app', 'Tag assignments'),
+            'content' => $tag_assignments_content,
+        ],
+    ],
+	]);
+
+	
+?>
 
 </div>
