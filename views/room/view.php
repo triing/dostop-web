@@ -39,9 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 <?php
 
-	$working_hours_content = "https://github.com/philippfrenzel/yii2fullcalendar";
-
-
 	$managements_content =
 		'<p>' . Html::a(Yii::t('app', 'Create Management'), ['room-management/create'], ['class' => 'btn btn-success']) . '</p>' .
 		GridView::widget([
@@ -103,10 +100,6 @@ $this->params['breadcrumbs'][] = $this->title;
     'align' => TabsX::ALIGN_LEFT,
 	'encodeLabels' => false,
     'items' => [
-        [
-            'label' => '<i class="glyphicon glyphicon-time"></i> ' . Yii::t('app', 'Working hours'),
-            'content' => $working_hours_content,
-        ],
         [
             'label' => '<i class="glyphicon glyphicon-briefcase"></i> ' . Yii::t('app', 'Management'),
             'content' => $managements_content,

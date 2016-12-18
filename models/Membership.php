@@ -97,8 +97,21 @@ class Membership extends \yii\db\ActiveRecord
               $role_type_log->updated_by = $this->updated_by;
               $role_type_log->created_at = time();
               $role_type_log->save();
-            } 
+            }
+			// Update user clearances
+			$this->getUser()->one()->updateClearances();
     }
+	
+	public function isValid() {
+	
+		if(DateTime($this->valid_from) < DateTime() && ($this->valid_to === NULL || DateTime($this->valid_to) > DateTime())) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	
+	}
 	
     /**
      * @return \yii\db\ActiveQuery

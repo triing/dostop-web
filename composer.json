@@ -28,7 +28,8 @@
         "kartik-v/yii2-widget-depdrop": "@dev",
         "kartik-v/yii2-widget-datepicker": "@dev",
         "kartik-v/yii2-datecontrol": "dev-master",
-        "kartik-v/yii2-widget-datetimepicker": "@dev"
+        "kartik-v/yii2-widget-datetimepicker": "@dev",
+        "philippfrenzel/yii2fullcalendar": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

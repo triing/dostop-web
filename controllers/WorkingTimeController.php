@@ -3,17 +3,16 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\WorkingTime;
+use app\models\WorkingTimeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-use app\models\Clearance;
-use app\modelsClearanceSearch;
-
 /**
- * ClearanceController implements the CRUD actions for Clearance model.
+ * WorkingTimeController implements the CRUD actions for WorkingTime model.
  */
-class ClearanceController extends Controller
+class WorkingTimeController extends Controller
 {
     public function behaviors()
     {
@@ -28,12 +27,12 @@ class ClearanceController extends Controller
     }
 
     /**
-     * Lists all Clearance models.
+     * Lists all WorkingTime models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new modelsClearanceSearch();
+        $searchModel = new WorkingTimeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -43,7 +42,7 @@ class ClearanceController extends Controller
     }
 
     /**
-     * Displays a single Clearance model.
+     * Displays a single WorkingTime model.
      * @param integer $id
      * @return mixed
      */
@@ -55,13 +54,13 @@ class ClearanceController extends Controller
     }
 
     /**
-     * Creates a new Clearance model.
+     * Creates a new WorkingTime model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Clearance();
+        $model = new WorkingTime();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -73,7 +72,7 @@ class ClearanceController extends Controller
     }
 
     /**
-     * Updates an existing Clearance model.
+     * Updates an existing WorkingTime model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -92,7 +91,7 @@ class ClearanceController extends Controller
     }
 
     /**
-     * Deletes an existing Clearance model.
+     * Deletes an existing WorkingTime model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -105,15 +104,15 @@ class ClearanceController extends Controller
     }
 
     /**
-     * Finds the Clearance model based on its primary key value.
+     * Finds the WorkingTime model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Clearance the loaded model
+     * @return WorkingTime the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Clearance::findOne($id)) !== null) {
+        if (($model = WorkingTime::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

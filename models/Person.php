@@ -119,6 +119,14 @@ class Person extends \yii\db\ActiveRecord
             } 
     }
 	
+	public function updateClearances() {
+	
+		// Update clearances for all (also invalid) tag assignments
+		foreach($this->getTagAssignments()->each() as $tag_assignment) {
+			$tag_assignment->updateClearances();
+		}
+	}
+	
 	public function getFirstnamelastnameemail() {
 		return $this->first_name . " " . $this->last_name . " (" . $this->email . ")";
 	}
@@ -145,6 +153,14 @@ class Person extends \yii\db\ActiveRecord
     public function getTagAssignments()
     {
         return $this->hasMany(TagAssignment::className(), ['person_id' => 'id']);
+    }
+	
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMemberships()
+    {
+        return $this->hasMany(Membership::className(), ['person_id' => 'id']);
     }
 	
     /**

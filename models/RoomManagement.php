@@ -99,8 +99,21 @@ class RoomManagement extends \yii\db\ActiveRecord
               $room_management_log->updated_by = $this->updated_by;
               $room_management_log->created_at = time();
               $room_management_log->save();
-            } 
+            }
+			// Update all clearances for organization
+			$this->getOrganization()->one()->updateClearances();
     }
+	
+	public function isValid() {
+	
+		if(DateTime($this->start_date) < DateTime() && ($this->end_date === NULL || DateTime($this->end_date) > DateTime())) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	
+	}
 	
     /**
      * @return \yii\db\ActiveQuery

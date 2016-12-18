@@ -86,12 +86,28 @@ class TagAssignment extends \yii\db\ActiveRecord
         ];
     }
 
+	public function beforeSave($insert)
+	{
+		if (parent::beforeSave($insert)) {
+		
+			// Adds tag if not exists
+			if(!Tag::find()->where(['id' => $this->tag_id])->exists()) {
+				$tag = new Tag();
+				$tag->id = $this->tag_id;
+				$tag->save();
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public function afterSave($insert,$changedAttributes)
     {
             parent::afterSave($insert,$changedAttributes);
 			
-			// Create clearances
-			createClearances();
+			// Update clearances
+			$this->updateClearances();
 			
             // when insert false, then record has been updated
             if (!$insert) {
@@ -104,12 +120,48 @@ class TagAssignment extends \yii\db\ActiveRecord
             } 
     }
 	
-	pubilc function createClearances() {
+	public function isValid() {
+	
+		if($this->end_date === NULL || DateTime($this->end_date) > DateTime()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	
+	}
+	
+	public function updateClearances() {
 	
 		// Remove any clearances for current tag_id
+		Clearance::deleteAll(['tag_id' => $this->tag_id]);
+		
 		// Find all memberships for the person
-			// Find all rooms managed by organization
-				// Make clearances for all doors to the room
+		foreach($this->getPerson()->one()->getMemberships()->each() as $membership) {
+		
+			// Only if membership is valid and type allows full time entrance
+			if($membership->isValid() && $membership->getMembershipType()->one()->access_rooms_always) {
+		
+				// Find all rooms managed by organization
+				foreach($membership->getOrganization()->one()->getRoomManagements()->each() as $room_management) {
+				
+					// Only if management is valid and type allows full time entrance
+					if($room_management->isValid() && $room_management->getManagementType()->one()->access_always) {
+					
+						// Make clearances for all doors to the room
+						foreach($room_management->getRoom()->one()->getDoorsTo()->each() as $door) {
+						
+							$clearance = new Clearance();
+							$clearance->door_id = $door->id;
+							$clearance->tag_id = $this->tag_id;
+							$clearance->start_date = max($room_management->start_date, $membership->valid_from, $this->start_date);
+							$clearance->end_date =  min($room_management->end_date, $membership->valid_to, $this->end_date);
+							$clearance->save();
+						}
+					}
+				}
+			}
+		}
 	
 	}
 	

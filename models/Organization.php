@@ -142,12 +142,30 @@ class Organization extends \yii\db\ActiveRecord
             } 
     }
 	
+	public function updateClearances() {
+	
+		// Update clearances for all active members
+		foreach($this->getMemberships()->each() as $membership) {
+			if($membership->isValid()) {
+				$membership->getPerson()->one()->updateClearances();
+			}
+		}
+	}
+	
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getMemberships()
     {
         return $this->hasMany(Membership::className(), ['organization_id' => 'id']);
+    }
+	
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRoomManagements()
+    {
+        return $this->hasMany(RoomManagement::className(), ['organization_id' => 'id']);
     }
 	
     /**

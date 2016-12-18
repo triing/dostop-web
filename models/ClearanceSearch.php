@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Organization;
+use app\models\Clearance;
 
 /**
- * OrganizationSearch represents the model behind the search form about `app\models\Organization`.
+ * ClearanceSearch represents the model behind the search form about `\app\models\Clearance`.
  */
-class OrganizationSearch extends Organization
+class ClearanceSearch extends Clearance
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class OrganizationSearch extends Organization
     public function rules()
     {
         return [
-            [['id', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
-            [['slug', 'name', 'domain', 'description', 'language'], 'safe'],
+            [['id', 'door_id'], 'integer'],
+            [['tag_id', 'start_date', 'end_date'], 'safe'],
         ];
     }
 
@@ -41,13 +41,13 @@ class OrganizationSearch extends Organization
      */
     public function search($params)
     {
-        $query = Organization::find();
+        $query = Clearance::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $this->load($params);
+        $this->load($params, '');
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -57,17 +57,12 @@ class OrganizationSearch extends Organization
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'door_id' => $this->door_id,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
         ]);
 
-        $query->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'domain', $this->domain])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'language', $this->language]);
+        $query->andFilterWhere(['like', 'tag_id', $this->tag_id]);
 
         return $dataProvider;
     }

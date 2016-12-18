@@ -1,5 +1,8 @@
 <?php
 
+/* Include debug functions */
+require_once(__DIR__.'/functions.php');
+
 use \kartik\datecontrol\Module;
 
 $params = require(__DIR__ . '/params.php');
@@ -69,6 +72,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'fvpDze8Oi7mRDkI6LVLhZNTN2FEenguL',
+			'parsers' => [
+				'application/json' => 'yii\web\JsonParser',
+			]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -102,23 +108,6 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-//				'<controller:\w+>/<id:\d+>' => '/view',
-//				'<controller:\w+>/<action:\w+>/<id:\d+>' => '/',
-//				'<controller:\w+>/<action:\w+>' => '/',
-					
-//				'organization' => 'organization/index',
-//				'organization/index' => 'organization/index',
-//				'organization/create' => 'organization/create',
-//				'organization/view/<id:\d+>' => 'organization/view',  
-//				'organization/update/<id:\d+>' => 'organization/update',  
-//				'organization/delete/<id:\d+>' => 'organization/delete',  
-//				'organization/<slug>' => 'organization/slug',
-
-//				'defaultRoute' => '/site/index',
-//				['class' => 'yii\rest\UrlRule', 'controller' => ['api/organization' => 'organizationapi']],
-//				['class' => 'yii\rest\UrlRule', 'controller' => ['api/user' => 'userapi']],
-            ],
         ],
     ],
     'params' => $params,
